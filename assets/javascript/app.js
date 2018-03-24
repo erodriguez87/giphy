@@ -3,8 +3,6 @@
 
 // Wait for the page to finish loading
 $(document).ready(function() {
-
- 
   
   //<===========================================================>
   //This section is for creating the dynamic buttons. I set up my initial array, do a for loop through the array and create dynamic buttons, attach the buttons to the page
@@ -49,12 +47,26 @@ $(document).ready(function() {
 
         for (i = 0; i < objectsRet.length; i++) {
           var imgDisplay = $("<img>");
+          var gifcapt = $('<labels>');
+
             imgDisplay.addClass("images img-fluid rounded mx-auto d-block text-center"); 
             imgDisplay.attr('src', objectsRet[i].images.original_still.url);
             imgDisplay.attr('dt-animate', objectsRet[i].images.original.url); 
             imgDisplay.attr('dt-still', objectsRet[i].images.original_still.url); 
             imgDisplay.attr('dt-state', 'still'); 
-          $('.gifDiv').prepend(imgDisplay); 
+          
+            imgDisplay.attr('rating', objectsRet[i].rating);
+
+            var gifcapt = $('<labels>');
+            var rtng = objectsRet[i].rating; 
+            console.log(rtng); 
+            var giflbl= $('<lbl>'); 
+            giflbl.text('this is rated ' + rtng); 
+            gifcapt.prepend(giflbl); 
+            gifcapt.append(imgDisplay); 
+            $('.gifDiv').prepend(gifcapt); 
+
+
         } // close the for loop
       }) // close the ajax call
     }) // close the on clicks for adding gifs to the DIV
@@ -74,7 +86,6 @@ $(document).ready(function() {
     //<===========================================================>
     //Actions that happen when the gifs are clicked. If animated pause, else animate
     $('.gifDiv').on('click', '.images', function () {
-      console.log('in Click')
       
       var playPause = $(this).attr('dt-state'); 
       var still = $(this).attr('dt-still'); 
@@ -90,5 +101,13 @@ $(document).ready(function() {
       }
     }); 
     //<===========================================================>
+
+    //<===========================================================>
+    //Clear section
+    $(".clear").on("click", function() {
+      $('.form-group :input').val('');
+    });
+  
+  
 
 });
