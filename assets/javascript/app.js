@@ -8,7 +8,6 @@ $(document).ready(function() {
   
   //<===========================================================>
   //This section is for creating the dynamic buttons. I set up my initial array, do a for loop through the array and create dynamic buttons, attach the buttons to the page
-
   var btnArr = ['panda','sad panda','angry panda','sneezing panda','funny panda'];
 
   function createButtons() {
@@ -24,9 +23,9 @@ $(document).ready(function() {
   createButtons();
   //<===========================================================>
 
+  
   //<===========================================================>
-
-  // function findGifs() {
+  // This is for finding GIFS and adding them to the DIV
     $('.btnDiv').on('click', '.imgs', function () {
 
       var animal = $(this).attr('value'); 
@@ -52,11 +51,44 @@ $(document).ready(function() {
           var imgDisplay = $("<img>");
             imgDisplay.addClass("images img-fluid rounded mx-auto d-block text-center"); 
             imgDisplay.attr('src', objectsRet[i].images.original_still.url);
-            imgDisplay.attr('data-animate', objectsRet[i].images.original.url); 
-            imgDisplay.attr('data-still', objectsRet[i].images.original_still.url); 
-            imgDisplay.attr('data-state', 'still'); 
+            imgDisplay.attr('dt-animate', objectsRet[i].images.original.url); 
+            imgDisplay.attr('dt-still', objectsRet[i].images.original_still.url); 
+            imgDisplay.attr('dt-state', 'still'); 
           $('.gifDiv').prepend(imgDisplay); 
         } // close the for loop
       }) // close the ajax call
-    }) // close the on clicks
+    }) // close the on clicks for adding gifs to the DIV
+    //<===========================================================>
+
+    //<===========================================================>
+    //Adds a new button when the user searches
+  $('.find').on('click', function(event) {
+    event.preventDefault(); //prevents submission of the form and refreshing of the page
+    var newSearch = $('.clicky').val();
+    newSearch += ' panda';
+    btnArr.push(newSearch); 
+    createButtons(); 
+  });
+    //<===========================================================>
+  
+    //<===========================================================>
+    //Actions that happen when the gifs are clicked. If animated pause, else animate
+    $('.gifDiv').on('click', '.images', function () {
+      console.log('in Click')
+      
+      var playPause = $(this).attr('dt-state'); 
+      var still = $(this).attr('dt-still'); 
+      var anim = $(this).attr('dt-animate'); 
+  
+      if (playPause === 'still') {
+        playPause = 'animate'; 
+        $(this).attr('src', anim);
+        $(this).attr('dt-state', 'animate');
+      }  else {
+        $(this).attr('src', still);
+        $(this).attr('dt-state', 'still');
+      }
+    }); 
+    //<===========================================================>
+
 });
